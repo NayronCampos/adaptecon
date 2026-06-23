@@ -9,246 +9,14 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-<style>
-  /* ============== DESIGN TOKENS ============== */
-  :root{
-    --bg:#0f1320;            /* azul petróleo escuro */
-    --bg-2:#141a2a;
-    --card:#1a2032;
-    --fg:#f3f1e9;            /* branco gelo */
-    --muted:#a9a89c;
-    --border:rgba(255,255,255,.08);
-    --gold:#d9b86a;
-    --gold-soft:#ead89a;
-    --primary:#d9b86a;
-    --primary-fg:#161a26;
-    --radius:14px;
-    --shadow-elegant: 0 30px 80px -30px rgba(0,0,0,.6), 0 8px 24px -12px rgba(217,184,106,.18);
-    --shadow-card: inset 0 1px 0 rgba(255,255,255,.04), 0 20px 40px -24px rgba(0,0,0,.55);
-    --t: 400ms cubic-bezier(.22,1,.36,1);
-    --font-display:"Playfair Display", Georgia, serif;
-    --font-sans:"Inter", system-ui, -apple-system, sans-serif;
-  }
-
-  *{box-sizing:border-box;border-color:var(--border)}
-  html{scroll-behavior:smooth}
-  body{
-    margin:0;background:var(--bg);color:var(--fg);
-    font-family:var(--font-sans);-webkit-font-smoothing:antialiased;
-    overflow-x:hidden;
-  }
-  h1,h2,h3,h4{font-family:var(--font-display);letter-spacing:-.01em;margin:0}
-  p{margin:0}
-  a{color:inherit;text-decoration:none}
-  img{display:block;max-width:100%}
-  ul{margin:0;padding:0;list-style:none}
-
-  .container{max-width:1200px;margin:0 auto;padding:0 24px}
-  .gold{color:var(--gold)}
-  .gradient-gold-text{
-    background:linear-gradient(135deg,#ead89a,#c9a35a);
-    -webkit-background-clip:text;background-clip:text;color:transparent;
-  }
-  .muted{color:var(--muted)}
-  .glass{
-    background:rgba(255,255,255,.04);
-    backdrop-filter:blur(12px) saturate(140%);
-    -webkit-backdrop-filter:blur(12px) saturate(140%);
-    border:1px solid var(--border);
-  }
-  .btn{
-    display:inline-flex;align-items:center;gap:.5rem;
-    padding:14px 28px;border-radius:999px;font-weight:600;font-size:14px;
-    transition:transform var(--t),background var(--t),opacity var(--t);
-    cursor:pointer;border:0;
-  }
-  .btn-primary{background:var(--primary);color:var(--primary-fg);box-shadow:var(--shadow-elegant)}
-  .btn-primary:hover{transform:translateY(-2px)}
-  .btn-ghost{border:1px solid var(--border);color:var(--fg);background:transparent}
-  .btn-ghost:hover{background:rgba(255,255,255,.04)}
-
-  /* ============== HEADER ============== */
-  header{
-    position:fixed;inset:0 0 auto 0;z-index:40;
-    transition:background var(--t),border-color var(--t);
-  }
-  header.scrolled{background:rgba(15,19,32,.7);backdrop-filter:blur(14px);border-bottom:1px solid var(--border)}
-  header nav{display:flex;align-items:center;justify-content:space-between;padding:18px 0}
-  header .brand{display:flex;align-items:center;gap:10px;font-family:var(--font-display);font-size:20px}
-  header .brand img{width:36px;height:36px;object-fit:contain}
-  header ul{display:none;gap:32px;font-size:14px;color:var(--muted)}
-  header ul a:hover{color:var(--fg)}
-  header .cta{display:none}
-  @media(min-width:880px){
-    header ul,header .cta{display:flex;align-items:center;gap:32px}
-  }
-
-  /* ============== HERO + PARTÍCULAS ============== */
-  .hero{
-    position:relative;overflow:hidden;
-    padding:140px 0 100px;
-    background:
-      radial-gradient(1200px 800px at 20% 30%, rgba(217,184,106,.18), transparent 60%),
-      radial-gradient(900px 700px at 80% 70%, rgba(40,55,90,.55), transparent 60%),
-      linear-gradient(180deg,#0c111d,#141a2a);
-  }
-  .hero-grid{display:grid;gap:48px;align-items:center}
-  @media(min-width:880px){.hero-grid{grid-template-columns:1fr 1fr}}
-  .hero h1{font-size:clamp(36px,5vw,64px);line-height:1.05}
-  .hero p.lead{margin-top:22px;color:var(--muted);max-width:560px;font-size:17px}
-  .badge{
-    display:inline-flex;align-items:center;gap:8px;
-    border:1px solid var(--border);background:rgba(255,255,255,.03);
-    padding:6px 14px;border-radius:999px;font-size:11px;
-    letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:18px;
-  }
-  .badge .dot{width:6px;height:6px;border-radius:999px;background:var(--gold)}
-  .hero .actions{display:flex;gap:14px;flex-wrap:wrap;margin-top:34px}
-  .hero .trust{margin-top:48px;display:flex;align-items:center;gap:18px;color:var(--muted);font-size:12px}
-  .hero .avatars{display:flex}
-  .hero .avatars span{
-    width:32px;height:32px;border-radius:999px;border:2px solid var(--bg);
-    background:linear-gradient(135deg,#d9b86a55,#283758);margin-left:-8px;
-  }
-  .hero .avatars span:first-child{margin-left:0}
-
-  /* logo + canvas wrapper */
-  .logo-stage{
-    position:relative;width:min(600px,90vw);aspect-ratio:1/1;margin:0 auto;
-    touch-action:none;
-  }
-  .logo-stage img{
-    position:absolute;inset:0;width:100%;height:100%;object-fit:contain;
-    user-select:none;-webkit-user-drag:none;pointer-events:none;
-    filter:drop-shadow(0 12px 32px rgba(217,184,106,.30));
-  }
-  .logo-stage canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
-  .logo-stage::before{
-    content:"";position:absolute;inset:24px;border-radius:50%;
-    background:rgba(217,184,106,.18);filter:blur(60px);z-index:-1;
-  }
-
-  /* ============== SEÇÕES ============== */
-  section{position:relative}
-  .section{padding:96px 0}
-  .eyebrow{font-size:11px;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
-  h2.title{font-size:clamp(28px,3.5vw,48px)}
-  .lead-2{color:var(--muted);margin-top:18px;font-size:17px;max-width:640px}
-
-  /* Sobre */
-  .about{display:grid;gap:56px;align-items:center}
-  @media(min-width:880px){.about{grid-template-columns:1fr 1fr}}
-  .about .img-wrap{position:relative;border-radius:18px;overflow:hidden;box-shadow:var(--shadow-elegant)}
-  .about .img-wrap img{width:100%;height:100%;object-fit:cover}
-  .about .img-wrap::after{
-    content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(15,19,32,.85),transparent)
-  }
-  .about .img-wrap .tag{
-    position:absolute;left:24px;bottom:24px;padding:12px 18px;border-radius:14px;
-  }
-  .about .img-wrap .tag .k{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
-  .about .img-wrap .tag .v{font-family:var(--font-display);font-size:20px;margin-top:4px}
-  .about ul.facts{margin-top:30px;display:grid;grid-template-columns:1fr 1fr;gap:14px}
-  .about ul.facts li{
-    display:flex;align-items:center;gap:12px;padding:12px 16px;
-    border:1px solid var(--border);border-radius:10px;background:rgba(255,255,255,.02);font-size:14px;
-  }
-  .about ul.facts li::before{content:"";width:8px;height:8px;border-radius:999px;background:var(--gold)}
-
-  /* Serviços */
-  .services{background:rgba(255,255,255,.02)}
-  .grid-3{display:grid;gap:22px;grid-template-columns:1fr}
-  @media(min-width:640px){.grid-3{grid-template-columns:1fr 1fr}}
-  @media(min-width:980px){.grid-3{grid-template-columns:1fr 1fr 1fr}}
-  .card{
-    background:var(--card);border:1px solid var(--border);border-radius:18px;
-    padding:28px;box-shadow:var(--shadow-card);transition:transform var(--t),border-color var(--t);
-    position:relative;overflow:hidden;
-  }
-  .card:hover{transform:translateY(-4px);border-color:rgba(217,184,106,.5)}
-  .card .ico{
-    width:48px;height:48px;border-radius:12px;background:rgba(217,184,106,.12);
-    display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:18px;
-    box-shadow:inset 0 0 0 1px var(--gold-soft);
-  }
-  .card h3{font-size:20px}
-  .card p{margin-top:10px;color:var(--muted);font-size:14px}
-  .center{text-align:center;max-width:640px;margin:0 auto 60px}
-
-  /* Diferenciais */
-  .diff-grid{
-    margin-top:48px;display:grid;gap:1px;border:1px solid var(--border);border-radius:18px;
-    overflow:hidden;background:var(--border);grid-template-columns:1fr;
-  }
-  @media(min-width:640px){.diff-grid{grid-template-columns:1fr 1fr}}
-  @media(min-width:980px){.diff-grid{grid-template-columns:repeat(3,1fr)}}
-  .diff{background:var(--card);padding:32px;transition:background var(--t)}
-  .diff:hover{background:#202740}
-  .diff .num{font-family:var(--font-display);font-size:28px;color:var(--gold);display:flex;align-items:center;gap:14px;margin-bottom:14px}
-  .diff .num::after{content:"";flex:1;height:1px;background:var(--border)}
-  .diff h3{font-size:20px}
-  .diff p{margin-top:10px;color:var(--muted);font-size:14px}
-
-  /* Stats */
-  .stats{
-    background:
-      radial-gradient(900px 600px at 30% 30%,rgba(217,184,106,.10),transparent 60%),
-      linear-gradient(180deg,#10182a,#0f1320);
-  }
-  .grid-4{display:grid;gap:22px;grid-template-columns:1fr 1fr}
-  @media(min-width:980px){.grid-4{grid-template-columns:repeat(4,1fr)}}
-  .stat{padding:32px;border-radius:18px;text-align:center}
-  .stat .v{font-family:var(--font-display);font-size:48px}
-  .stat .l{margin-top:10px;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
-
-  /* CTA */
-  .cta-box{
-    position:relative;overflow:hidden;border-radius:24px;
-    background:var(--card);border:1px solid var(--border);
-    padding:56px;box-shadow:var(--shadow-elegant);
-    display:grid;gap:32px;align-items:center;
-  }
-  @media(min-width:880px){.cta-box{grid-template-columns:1.4fr 1fr;padding:64px}}
-  .cta-box::before,.cta-box::after{
-    content:"";position:absolute;width:300px;height:300px;border-radius:999px;filter:blur(80px);
-  }
-  .cta-box::before{background:rgba(217,184,106,.20);right:-80px;top:-80px}
-  .cta-box::after{background:rgba(40,55,90,.55);left:-60px;bottom:-90px}
-  .cta-actions{display:flex;flex-direction:column;gap:12px}
-
-  /* Footer */
-  footer{border-top:1px solid var(--border);padding:56px 0}
-  .foot{display:grid;gap:40px;grid-template-columns:1fr}
-  @media(min-width:880px){.foot{grid-template-columns:2fr 1fr 1fr}}
-  .foot .brand{display:flex;align-items:center;gap:10px;font-family:var(--font-display);font-size:18px}
-  .foot .brand img{width:32px;height:32px}
-  .foot h4{font-size:11px;text-transform:uppercase;letter-spacing:.18em;color:var(--gold);margin-bottom:14px;font-family:var(--font-sans)}
-  .foot li{font-size:14px;color:var(--muted);margin-bottom:8px}
-  .foot a:hover{color:var(--fg)}
-  .copyright{border-top:1px solid var(--border);margin-top:40px;padding-top:24px;text-align:center;color:var(--muted);font-size:12px}
-
-  /* Reveal */
-  .fade-up{opacity:0;transform:translateY(24px);transition:opacity .8s ease, transform .8s cubic-bezier(.22,1,.36,1)}
-  .fade-up.in{opacity:1;transform:none}
-
-  /* WhatsApp floating */
-  .wa{
-    position:fixed;right:22px;bottom:22px;z-index:50;
-    width:58px;height:58px;border-radius:999px;background:#25D366;color:#fff;
-    display:flex;align-items:center;justify-content:center;
-    box-shadow:0 14px 30px -10px rgba(37,211,102,.6);
-    transition:transform var(--t);
-  }
-  .wa:hover{transform:scale(1.08)}
-  .wa svg{width:30px;height:30px}
-</style>
+<link rel="stylesheet" href="assets/css/styles.css" />
 </head>
 <body>
 
 <header id="hdr">
   <nav class="container">
     <a href="#top" class="brand">
-      <img src="assets/img/Nome-Photoroom.png" alt="Adaptecon" />
+      <img src="assets/img/NomePNG.png" alt="Adaptecon"/>
     </a>
     <ul>
       <li><a href="#sobre">Sobre</a></li>
@@ -258,7 +26,7 @@
       <li><a href="#contato">Contato</a></li>
     </ul>
     <div class="cta">
-      <a href="https://wa.me/5500000000000" target="_blank" rel="noopener">Falar com a Adaptecon</a>
+      <a class="btn-header" href="https://wa.me/5500000000000" target="_blank" rel="noopener">Falar com a Adaptecon</a>
     </div>
   </nav>
 </header>
@@ -279,7 +47,12 @@
         <a class="btn btn-ghost" href="#servicos">Conheça os serviços</a>
       </div>
       <div class="trust">
-        <div class="avatars"><span><img src="assets/img/Local.jpeg"></span><span></span><span></span><span></span></div>
+        <div class="avatars">
+          <span><img src="assets/img/WhatsApp Image 2026-06-11 at 10.28.28.jpeg" alt="" /></span>
+          <span><img src="assets/img/WhatsApp Image 2026-06-11 at 10.28.28 (3).jpeg" alt="" /></span>
+          <span><img src="assets/img/WhatsApp Image 2026-06-11 at 10.28.28 (4).jpeg" alt="" /></span>
+          <span><img src="assets/img/WhatsApp Image 2026-06-11 at 10.28.28 (5).jpeg" alt="" /></span>
+        </div>
         <span>+180 condomínios confiam na Adaptecon</span>
       </div>
     </div>
@@ -368,7 +141,7 @@
 <footer>
   <div class="container foot">
     <div>
-      <div class="brand"><img src="assets/img/Nome-Photoroom.png" alt="" /></div>
+      <div class="brand"><img src="assets/img/NomePNG.png" alt="" /></div>
       <p style="margin-top:14px;color:var(--muted);font-size:14px;max-width:360px">Administração condominial premium — confiança, organização e modernidade para o seu patrimônio.</p>
     </div>
     <div>
@@ -395,137 +168,6 @@
   <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 3.5A11 11 0 0 0 3.2 17.2L2 22l4.9-1.3A11 11 0 1 0 20.5 3.5Zm-8.5 17a8.9 8.9 0 0 1-4.6-1.3l-.3-.2-2.9.8.8-2.8-.2-.3a8.9 8.9 0 1 1 7.2 3.8Zm5-6.7c-.3-.1-1.6-.8-1.9-.9s-.4-.1-.6.2-.7.9-.8 1-.3.2-.6.1a7.3 7.3 0 0 1-3.6-3.1c-.3-.5.3-.5.8-1.5.1-.2 0-.3 0-.4l-.9-2c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-1 2.3c0 1.4 1 2.7 1.2 2.9s2.1 3.2 5.1 4.5c.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.6-.7 1.9-1.3.2-.7.2-1.2.2-1.3s-.2-.2-.5-.3Z"/></svg>
 </a>
 
-<script>
-/* =========================================
-   DADOS — EDITE AQUI PARA TROCAR CONTEÚDO
-   ========================================= */
-const services = [
-  { icon:"🏛️", title:"Administração condominial", desc:"Gestão completa do dia a dia do condomínio com processos claros e organizados." },
-  { icon:"📊", title:"Gestão financeira",         desc:"Controle preciso de receitas, despesas e inadimplência com relatórios mensais." },
-  { icon:"📑", title:"Prestação de contas",        desc:"Transparência total: documentos auditáveis e demonstrativos acessíveis." },
-  { icon:"🗣️", title:"Apoio a assembleias",       desc:"Convocação, condução e ata — tudo conduzido com método e neutralidade." },
-  { icon:"🤝", title:"Atendimento ao síndico",     desc:"Suporte ágil ao síndico e moradores, com canal direto e respostas claras." },
-  { icon:"🧾", title:"Contratação de fornecedores",desc:"Orçamentos comparativos e gestão de contratos com critérios técnicos." },
-  { icon:"🛠️", title:"Manutenção preventiva",     desc:"Acompanhamento de cronogramas para preservar o patrimônio condominial." },
-  { icon:"💡", title:"Consultoria condominial",    desc:"Diagnóstico e plano de ação para otimizar gestão, custos e relações." },
-  { icon:"🗂️", title:"Suporte administrativo",   desc:"Equipe dedicada para rotinas operacionais e documentação em ordem." },
-];
-const diffs = [
-  { t:"Atendimento humanizado", d:"Pessoas reais, respostas rápidas e linguagem clara." },
-  { t:"Transparência total",    d:"Você acompanha cada centavo e cada decisão." },
-  { t:"Suporte contínuo",       d:"Estamos presentes — não só quando há problema." },
-  { t:"Visão estratégica",      d:"Decisões pensadas a longo prazo para o seu patrimônio." },
-  { t:"Comunicação clara",      d:"Comunicados objetivos, sem jargão técnico desnecessário." },
-  { t:"Confiança na gestão",    d:"Processos auditáveis e equipe qualificada." },
-];
-const stats = [
-  { v:"180+", l:"Condomínios atendidos" },
-  { v:"15",   l:"Anos de experiência" },
-  { v:"98%",  l:"Síndicos satisfeitos" },
-  { v:"24h",  l:"Tempo médio de resposta" },
-];
-
-/* Render */
-document.getElementById("services").innerHTML = services.map(s=>`
-  <article class="card fade-up">
-    <div class="ico">${s.icon}</div>
-    <h3>${s.title}</h3>
-    <p>${s.desc}</p>
-  </article>`).join("");
-document.getElementById("diffs").innerHTML = diffs.map((d,i)=>`
-  <div class="diff fade-up">
-    <div class="num">0${i+1}</div>
-    <h3>${d.t}</h3><p>${d.d}</p>
-  </div>`).join("");
-document.getElementById("stats").innerHTML = stats.map(s=>`
-  <div class="stat glass fade-up">
-    <div class="v gradient-gold-text">${s.v}</div>
-    <div class="l">${s.l}</div>
-  </div>`).join("");
-document.getElementById("yr").textContent = new Date().getFullYear();
-
-/* Header scroll */
-const hdr = document.getElementById("hdr");
-addEventListener("scroll", ()=> hdr.classList.toggle("scrolled", scrollY > 20), { passive:true });
-
-/* Reveal on scroll */
-const io = new IntersectionObserver(es=>es.forEach(e=>e.isIntersecting&&e.target.classList.add("in")),{threshold:.12});
-document.querySelectorAll(".fade-up").forEach(el=>io.observe(el));
-
-/* ===========================================
-   DEMO 4 — ÓRBITAS DOURADAS ao redor do logo
-   =========================================== */
-(function(){
-  const wrap   = document.getElementById("stage");
-  const canvas = document.getElementById("cv");
-  const ctx    = canvas.getContext("2d");
-  const dpr    = window.devicePixelRatio || 1;
-  let w=0,h=0, particles=[], raf;
-  const mouse  = { x:-9999, y:-9999, inside:false };
-
-  function resize(){
-    const r = wrap.getBoundingClientRect();
-    w = r.width; h = r.height;
-    canvas.width = w*dpr; canvas.height = h*dpr;
-    canvas.style.width = w+"px"; canvas.style.height = h+"px";
-    ctx.setTransform(dpr,0,0,dpr,0,0);
-    // partículas em 3 anéis
-    particles = [];
-    const cx = w/2, cy = h/2;
-    for (let i=0; i<110; i++){
-      const ring = i % 3;
-      const a = Math.random() * Math.PI * 2;
-      const radius = (w*0.22) + ring*(w*0.10) + Math.random()*8;
-      particles.push({
-        angle:a,
-        radius,
-        speed: (ring % 2 === 0 ? 1 : -1) * (0.003 + Math.random()*0.004),
-        x: cx + Math.cos(a)*radius,
-        y: cy + Math.sin(a)*radius,
-        size: 1.2 + Math.random()*2.4
-      });
-    }
-  }
-
-  function onMove(e){
-    const r = wrap.getBoundingClientRect();
-    mouse.x = e.clientX - r.left;
-    mouse.y = e.clientY - r.top;
-    mouse.inside = true;
-  }
-  function onLeave(){ mouse.inside = false; mouse.x=-9999; mouse.y=-9999; }
-
-  function draw(){
-    ctx.clearRect(0,0,w,h);
-    const cx = w/2, cy = h/2;
-    ctx.globalCompositeOperation = "lighter";
-    for (const p of particles){
-      p.angle += p.speed;
-      let tx = cx + Math.cos(p.angle) * p.radius;
-      let ty = cy + Math.sin(p.angle) * p.radius;
-      if (mouse.inside){
-        tx += (mouse.x - cx) * 0.30;
-        ty += (mouse.y - cy) * 0.30;
-      }
-      p.x += (tx - p.x) * 0.12;
-      p.y += (ty - p.y) * 0.12;
-      ctx.fillStyle = "rgba(230,190,90,0.9)";
-      ctx.shadowColor = "rgba(255,230,160,1)";
-      ctx.shadowBlur = 10;
-      ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI*2); ctx.fill();
-    }
-    ctx.shadowBlur = 0;
-    ctx.globalCompositeOperation = "source-over";
-    raf = requestAnimationFrame(draw);
-  }
-
-  resize();
-  addEventListener("resize", resize);
-  wrap.addEventListener("pointermove", onMove);
-  wrap.addEventListener("pointerenter", onMove);
-  wrap.addEventListener("pointerleave", onLeave);
-  raf = requestAnimationFrame(draw);
-})();
-</script>
+<script src="assets/js/main.js" defer></script>
 </body>
 </html>
